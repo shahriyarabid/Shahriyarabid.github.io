@@ -43,7 +43,24 @@ nav .container {
   justify-content: space-between;
   align-items: center;
 }
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+/* desktop nav */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+/* menu icon hidden on desktop */
+.menu-icon {
+  display: none;
+  font-size: 22px;
+  cursor: pointer;
+}
 nav a {
   text-decoration: none;
   color: #333;
@@ -179,7 +196,27 @@ footer {
   background: #111;
   color: white;
 }
+@media (max-width: 768px) {
 
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: white;
+    flex-direction: column;
+    width: 200px;
+    padding: 15px;
+    display: none;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
 </style>
 </head>
 
@@ -187,15 +224,18 @@ footer {
 
 <!-- NAVBAR -->
 <nav>
-  <div class="container">
-    <h3>Shahriyar Abid</h3>
-    <div>
+  <div class="container nav-container">
+    <h3 class="logo">Shahriyar Abid</h3>
+
+    <div class="nav-links" id="navLinks">
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#contact">Contact</a>
     </div>
+
+    <i class="fa-solid fa-bars menu-icon" onclick="toggleMenu()" aria-label="menu"></i>
   </div>
 </nav>
 
@@ -390,10 +430,12 @@ const observer = new IntersectionObserver(entries => {
     if (entry.isIntersecting) {
       entry.target.classList.add('show');
 
-      const bar = entry.target.querySelector('.progress span');
-      if (bar) {
-        bar.style.width = bar.getAttribute('style').split(':')[1];
-      }
+     const bar = entry.target.querySelector('.progress span');
+if (bar) {
+  const value = bar.getAttribute('style');
+  const percent = value.match(/\d+%/)[0];
+  bar.style.width = percent;
+}
     }
   });
 }, { threshold: 0.3 });
@@ -422,7 +464,9 @@ buttons.forEach(btn => {
 
   });
 });
-
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("show");
+}
 </script>
 </body>
 </html>
